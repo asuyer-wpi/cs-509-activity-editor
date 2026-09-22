@@ -1,5 +1,100 @@
+:root {
+  /* Text colors */
+  --green-text: #3d7a56;
+  --normal-text: #37322c;
+
+  /* Input field colors */
+  --input-background: #F3EEE4;
+  --input-border: #DDD4C1;
+
+  /* Event card colors */
+  --activity-card-background: #F3EEE4;
+  --activity-card-border: #DDD4C1;
+  --activity-card-background-hover: #E7F0EA;
+  --activity-card-border-hover: #3D7A56;
+
+  --activity-card-drop-area-border: #a9805c;
+}
+
 /* Header */
 .pageTitle {
   font-size: 5rem;
   font-style: bold;
 }
+
+/* General section sytling */
+
+.sectionTitle {
+  color: var(--green-text);
+  font-family: Roboto;
+  font-size: 2rem;
+  font-style: normal;
+  line-height: normal;
+  margin-top: 1rem;
+}
+
+.listHeading {
+  margin-top: 1rem;
+}
+
+
+/* General styling for a button with an icon in it */
+.iconButton {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center; 
+  background: none;
+  border: none;
+}
+
+
+.nameAndAdd {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.addButton {
+  font-style: bold;
+  font-weight: 400;
+  color: var(--normal-text);
+  margin: 1px;
+  padding: 0 0.25rem 0 0.25rem;
+}
+
+.addButton:hover {
+  border-radius: 10px;
+  border: 1px solid var(--activity-card-border-hover);
+  margin: 0px;
+}
+
+
+
+/* Reporter input field */
+
+.reporterInput {
+  width: 75%;
+}
+
+.nameLabel {
+  color: var(--normal-text);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.activity-input__name-input,
+.activity-input__description-input,
+.nameInput {
+  border: 1px solid var(--input-border);
+  background: var(--input-background);
+  /* width: 450px; */
+  height: 30px;
+  flex-grow: 1;
+}
+
+
+
+
