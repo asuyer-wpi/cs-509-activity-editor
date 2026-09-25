@@ -1,7 +1,7 @@
 "use client"
 import styles from "./page.module.css"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlus } from '@fortawesome/free-solid-svg-icons'
+import { faPlus, faTrashCan, faUpDownLeftRight } from '@fortawesome/free-solid-svg-icons'
 import { useEffect, useState } from "react"
 
 import { ActivityEditor, Activity, Reporter } from "@/model"
@@ -15,6 +15,14 @@ export default function Page() {
    */
   function addReporter(name: string) {
     setEditor(editor.withNewReporter(new Reporter(name)))
+  }
+
+  /**
+   * Controller: removes unassigned reporter from the reporter list
+   *
+   */
+  function removeReporter(reporter: Reporter) {
+    setEditor(editor.withReporterRemoved(reporter))
   }
 
   // TODO: remove once 
@@ -39,6 +47,8 @@ export default function Page() {
       <section id="reporters">
         <h2 className={styles.sectionTitle}>Reporters</h2>
         <ReporterInput addReporter={addReporter} />
+        <h3 className={styles.listHeading}>Reporters:</h3>
+        <ReporterList reporters={editor.getAvailableReporters()} removeReporter={removeReporter} />
       </section>
 
       <section id="activities">
@@ -82,6 +92,46 @@ function ReporterInput({ addReporter }: { addReporter: (name: string) => void })
         Add
       </button>
     </form>
+  )
+}
+
+/**
+ * List of reporters that can be independently deleted
+ * @prop reporters - list of reporters to display
+ * @prop removeReporter - callback function for removing a reporter
+ */
+function ReporterList({
+  reporters, removeReporter
+}: {
+  reporters: Reporter[], removeReporter: (r: Reporter) => void
+}) {
+  const deleteButtonIdPrefix = "reporter-delete-"
+
+  function handleDeleteClick(event: React.MouseEvent<HTMLButtonElement>) {
+    // Get button that was clicked, then retrieve reporter index from it's id
+    const button = event.currentTarget
+    const idx = Number(button.id.split("-").at(-1))
+    removeReporter(reporters[idx])
+  }
+
+  // Create list item entries for each reporter
+  const reporterListItems = reporters.map((reporter, idx) =>
+    <li className={styles.reporterItem} key={idx} draggable>
+      <FontAwesomeIcon icon={faUpDownLeftRight} />
+      {reporter.name}
+      <button
+        className={styles.iconButton}
+        onClick={handleDeleteClick}
+        id={deleteButtonIdPrefix + idx}>
+        <FontAwesomeIcon icon={faTrashCan} />
+      </button>
+    </li>
+  )
+
+  return (
+    <ul className={styles.reporterList}>
+      {reporterListItems}
+    </ul>
   )
 }
 

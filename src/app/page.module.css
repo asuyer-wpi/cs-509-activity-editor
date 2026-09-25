@@ -95,6 +95,18 @@
   flex-grow: 1;
 }
 
+/* Reporter list */
+
+.reporterList {
+  list-style-type: none;
+  margin-left: 1rem;
+}
+
+.reporterItem {
+  display: block;
+  margin: 0.5rem;
+}
+
 
 
 
