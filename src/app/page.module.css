@@ -37,8 +37,7 @@
   margin-top: 1rem;
 }
 
-
-/* General styling for a button with an icon in it */
+/* Button with an icon in it */
 .iconButton {
   display: inline-flex;
   flex-direction: column;
@@ -47,7 +46,6 @@
   border: none;
 }
 
-
 .nameAndAdd {
   width: 100%;
   display: inline-flex;
@@ -55,6 +53,7 @@
   gap: 0.5rem;
 }
 
+/* Plus (+) button */
 .addButton {
   font-style: bold;
   font-weight: 400;
@@ -69,6 +68,14 @@
   margin: 0px;
 }
 
+/* */
+.textInput {
+  border: 1px solid var(--input-border);
+  background: var(--input-background);
+  /* width: 450px; */
+  height: 30px;
+  flex-grow: 1;
+}
 
 
 /* Reporter input field */
@@ -85,16 +92,6 @@
   line-height: normal;
 }
 
-.activity-input__name-input,
-.activity-input__description-input,
-.nameInput {
-  border: 1px solid var(--input-border);
-  background: var(--input-background);
-  /* width: 450px; */
-  height: 30px;
-  flex-grow: 1;
-}
-
 /* Reporter list */
 
 .reporterList {
@@ -107,6 +104,13 @@
   margin: 0.5rem;
 }
 
+/* Activity input field */
 
-
+.activityInput {
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  gap: 10px;
+  width: 75%;
+}
 
