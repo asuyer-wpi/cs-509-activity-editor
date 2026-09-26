@@ -104,14 +104,18 @@ export class ActivityEditor {
    */
   withActivityAssigned(a: Activity, r: Reporter): ActivityEditor {
     return new ActivityEditor(
-      [
-        new Activity(a.name, a.description, r),
-        ...this.activities.filter(e => e !== a)
-      ],
-      [
-        new Reporter(r.name, a),
-        ...this.reporters.filter(e => e !== r)
-      ]
+      this.activities.map(e => {
+        if (e === a) {
+          e.setAssignee(r)
+        }
+        return e
+      }),
+      this.reporters.map(e => {
+        if (e === r) {
+          r.assignTo(a)
+        }
+        return e
+      })
     )
   }
 }

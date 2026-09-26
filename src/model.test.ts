@@ -155,21 +155,30 @@ test("Removing reporters", () => {
 })
 
 test("Assigning activities to reporters", () => {
-  const a = new Activity("a", "abc")
+  const a1 = new Activity("a1", "abc")
+  const a2 = new Activity("a2", "abc")
+  const a3 = new Activity("a3", "abc")
   const r = new Reporter("r")
 
   const startingEditor = new ActivityEditor()
-  const e1 = startingEditor.withNewActivity(a).withNewReporter(r)
+  const e1 = startingEditor.withNewActivity(a1)
+    .withNewActivity(a2)
+    .withNewActivity(a3)
+    .withNewReporter(r)
   expect(e1.getAvailableReporters()).toHaveLength(1)
 
-  // Assign a to r
-  const e2 = e1.withActivityAssigned(a, r)
+  // Assign a2 to r
+  const e2 = e1.withActivityAssigned(a2, r)
 
-  // Check if activity and reporter are assigned
-  expect(e2.activities).toHaveLength(1)
-  expect(e2.activities[0]).toEqual(new Activity("a", "abc", r))
+  // Check if activity and reporter are assigned and that order of activites is
+  // unchanged
+  expect(e2.activities).toHaveLength(3)
+  expect(e2.activities[0]).toEqual(new Activity("a1", "abc"))
+  expect(e2.activities[1]).toEqual(new Activity("a2", "abc", r))
+  expect(e2.activities[2]).toEqual(new Activity("a3", "abc"))
+
   expect(e2.reporters).toHaveLength(1)
-  expect(e2.reporters[0]).toEqual(new Reporter("r", a))
+  expect(e2.reporters[0]).toEqual(new Reporter("r", a2))
 
   // Make sure no reportes are available
   expect(e2.getAvailableReporters()).toHaveLength(0)
