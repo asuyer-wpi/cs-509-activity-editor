@@ -14,9 +14,15 @@ export class ActivityEditor {
   }
 
   /**
-   * Returns a new ActivityEditor with the Activity `a` added.
+   * Returns a new ActivityEditor with the Activity `a` added. Does nothing if an activity
+   * with the same name already exists
    */
   withNewActivity(a: Activity): ActivityEditor {
+    // Do nothing if this activity is already in the list
+    if (this.activities.some(e => e.name === a.name && e.description === a.description)) {
+      return this
+    }
+
     return new ActivityEditor(
       [...this.activities, a],
       this.reporters
@@ -40,9 +46,15 @@ export class ActivityEditor {
   }
 
   /**
-   * Returns a new ActivityEditor with the Reporter `r` added.
+   * Returns a new ActivityEditor with the Reporter `r` added. Does nothing if a reporter
+   * with the same name already exists.
    */
   withNewReporter(r: Reporter): ActivityEditor {
+    // Do nothing if this reporter is already in the list
+    if (this.reporters.some(e => e.name === r.name)) {
+      return this
+    }
+
     return new ActivityEditor(
       this.activities,
       [...this.reporters, r]

@@ -26,6 +26,13 @@ test("Adding activities", () => {
   expect(e2.activities).toHaveLength(2)
   expect(e2.activities[0]).toEqual(a)
   expect(e2.activities[1]).toEqual(b)
+
+  // Adding an activity that has the same fields as an existing activity should do nothing
+  const a2 = new Activity("a", "abc")
+  const e3 = e2.withNewActivity(a2)
+  expect(e3.activities).toHaveLength(2)
+  expect(e3.activities[0]).toEqual(a)
+  expect(e3.activities[1]).toEqual(b)
 })
 
 test("Removing activities", () => {
@@ -111,6 +118,13 @@ test("Adding reporters", () => {
   expect(e2.reporters).toHaveLength(2)
   expect(e2.reporters[0]).toEqual(a)
   expect(e2.reporters[1]).toEqual(b)
+
+  // Adding a reporter with the same name as an existing reporter should do nothing
+  const a2 = new Reporter("a")
+  const e3 = e2.withNewReporter(a2)
+  expect(e3.reporters).toHaveLength(2)
+  expect(e3.reporters[0]).toEqual(a)
+  expect(e3.reporters[1]).toEqual(b)
 })
 
 test("Removing reporters", () => {
