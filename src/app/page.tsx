@@ -1,8 +1,8 @@
 "use client"
 import styles from "./page.module.css"
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlus, faTrashCan, faUpDownLeftRight } from '@fortawesome/free-solid-svg-icons'
-import { useEffect, useState } from "react"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faPlus, faTrashCan, faUpDownLeftRight } from "@fortawesome/free-solid-svg-icons"
+import { useState } from "react"
 
 import { ActivityEditor, Activity, Reporter } from "@/model"
 
@@ -34,18 +34,30 @@ export default function Page() {
     setEditor(editor.withNewActivity(new Activity(name, description)))
   }
 
-  // TODO: remove once 
-  useEffect(() => {
-    console.log("Activities:")
-    for (const activity of editor.activities) {
-      console.log(`${activity.name} - ${activity.description}`)
-    }
+  /**
+   * Controller: removes unassigned activity from the activity list
+   * @param activity - Activity to remove
+   */
+  function removeActivity(activity: Activity) {
+    setEditor(editor.withActivityRemoved(activity))
+  }
 
-    console.log("Reporters:")
-    for (const reporter of editor.reporters) {
-      console.log(`${reporter.name}`)
-    }
-  }, [editor])
+  /**
+   * Controller: moves an activity to the front of the activity list
+   * @param activity - Activity to promote
+   */
+  function promoteActivity(activity: Activity) {
+    setEditor(editor.withActivityPromoted(activity))
+  }
+
+  /**
+   * Controller: assignes `activity` to `reporter`
+   * @param activity - activity to assign
+   * @param reporter - reporter to assign activity to
+   */
+  function assignReporter(activity: Activity, reporter: Reporter) {
+    setEditor(editor.withActivityAssigned(activity, reporter))
+  }
 
   return (
     <main>
@@ -63,6 +75,13 @@ export default function Page() {
       <section id="activities">
         <h2 className={styles.sectionTitle}>Activities</h2>
         <ActivityInput addActivity={addActivity} />
+        <h3 className={styles.listHeading}>Activities:</h3>
+        <ActivityList
+          activities={editor.activities}
+          availableReporters={editor.getAvailableReporters()}
+          removeActivity={removeActivity}
+          assignReporter={assignReporter}
+          promoteActivity={promoteActivity} />
       </section>
     </main>
   )
@@ -192,6 +211,127 @@ function ActivityInput({
       <textarea className={styles.textInput} id={activityDescriptionId}
         placeholder="Once you enter a name and description, press the + button"></textarea>
     </form>
+  )
+}
+
+/**
+ * List of activities that can be independently deleted, promoted, and assigned to reporters 
+ * @prop activities - list of reporters to display
+ * @prop availableReporters - list of reporters that can be assigned to activites
+ * @prop removeActivity - callback function for removing a reporter
+ * @prop assignActivity - callback function for assigning reporter to an activity
+ * @prop promoteActivity - callback function for promoting an activity
+ */
+function ActivityList({
+  activities, availableReporters, removeActivity, assignReporter, promoteActivity
+}: {
+  activities: Activity[],
+  availableReporters: Reporter[],
+  removeActivity: (a: Activity) => void,
+  assignReporter: (activity: Activity, reporter: Reporter) => void,
+  promoteActivity: (a: Activity) => void,
+}) {
+
+  const activityListItems = activities.map((activity, idx) =>
+    <ActivityCard
+      key={idx}
+      activity={activity}
+      availableReporters={availableReporters}
+      removeActivity={removeActivity}
+      assignReporter={assignReporter}
+      promoteActivity={promoteActivity} />
+  )
+
+  return (
+    <ul className={styles.activityList}>
+      {activityListItems}
+    </ul>
+  )
+}
+
+/**
+ * A single activity display card
+ * @prop activity - activity to display
+ * @prop availableReporters - list of reporters that can be assigned to this activity
+ * @prop removeActivity - callback function for removing a reporter
+ * @prop assignReporter - callback function for assigning reporter to this activity
+ * @prop promoteActivity - callback function for promoting an activity
+ */
+function ActivityCard({
+  activity, availableReporters, removeActivity, assignReporter, promoteActivity
+}: {
+  activity: Activity,
+  availableReporters: Reporter[],
+  removeActivity: (activity: Activity) => void,
+  assignReporter: (activity: Activity, reporter: Reporter) => void,
+  promoteActivity: (activity: Activity) => void,
+}) {
+  // Name of the reporter assigned to this activity, or "" if no reporter assigned
+  const [selectedReporterName, _setSelectedReporter]
+    = useState<string>(activity.assignee != null ? activity.assignee.name : "")
+
+  function handleDeleteClick() {
+    // Remove this activity if the remove button is clicked
+    removeActivity(activity)
+  }
+
+  function handleCardClick() {
+    // Promote this activity if this card is clicked
+    promoteActivity(activity)
+  }
+
+  function handleReporterSelectChange(event: React.ChangeEvent<HTMLSelectElement>) {
+    const reporterName = event.target.value
+
+    if (reporterName != selectedReporterName) {
+      // Get the reporter from the list and assign it
+      const reporterToAssign = availableReporters.find(e => e.name === reporterName)
+      if (reporterToAssign != null) {
+        assignReporter(activity, reporterToAssign)
+      }
+    }
+  }
+
+  const availableReporterOptions = availableReporters.map((reporter, idx) =>
+    <option value={reporter.name} key={idx}>
+      {reporter.name}
+    </option>
+  )
+
+  return (
+    <li className={styles.activityItem}>
+      <div className={styles.activityCard} onClick={handleCardClick}>
+        <span className={styles.activityCardHeader}>
+          <p className={styles.activityCardTitle}>{activity.name}</p>
+          {activity.assignee == null ?
+            <button
+              className={`${styles.iconButton} ${styles.activityCardDeleteButton}`}
+              onClick={handleDeleteClick}>
+              <FontAwesomeIcon icon={faTrashCan} />
+              Remove
+            </button>
+            : null
+          }
+        </span>
+        <p className={styles.activityCardDescription}>{activity.description}</p>
+        <span className={styles.activityCardReporter}>
+          <p className={styles.activityCardReporterLabel}>Reporter:</p>
+          {activity.assignee != null ?
+            <p>{activity.assignee.name}</p>
+            :
+            <select
+              className={styles.activityCardReporterSelect}
+              value={selectedReporterName!}
+              onClick={(event) => event.stopPropagation()}
+              onChange={handleReporterSelectChange}
+            >
+              <option value="" disabled hidden>Select a reporter...</option>
+              {availableReporterOptions}
+            </select>
+          }
+        </span>
+      </div>
+    </li>
   )
 }
 
