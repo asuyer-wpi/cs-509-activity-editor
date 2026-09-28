@@ -145,15 +145,14 @@ function ReporterList({
 
   // Create list item entries for each reporter
   const reporterListItems = reporters.map((reporter, idx) =>
-    <li className={styles.reporterItem} key={idx} draggable>
-      <FontAwesomeIcon icon={faUpDownLeftRight} />
-      {reporter.name}
+    <li className={styles.reporterItem} key={idx}>
       <button
         className={styles.iconButton}
         onClick={handleDeleteClick}
         id={deleteButtonIdPrefix + idx}>
         <FontAwesomeIcon icon={faTrashCan} />
       </button>
+      {reporter.name}
     </li>
   )
 
@@ -270,8 +269,9 @@ function ActivityCard({
   const [selectedReporterName, _setSelectedReporter]
     = useState<string>(activity.assignee != null ? activity.assignee.name : "")
 
-  function handleDeleteClick() {
+  function handleDeleteClick(event: React.MouseEvent<HTMLButtonElement>) {
     // Remove this activity if the remove button is clicked
+    event.stopPropagation()
     removeActivity(activity)
   }
 
