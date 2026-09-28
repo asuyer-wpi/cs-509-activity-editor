@@ -75,7 +75,7 @@ export default function Page() {
       <section id="activities">
         <h2 className={styles.sectionTitle}>Activities</h2>
         <ActivityInput addActivity={addActivity} />
-        <h3 className={styles.listHeading}>Activities:</h3>
+        <h3 className={styles.listHeading}>Activities (click one to promote):</h3>
         <ActivityList
           activities={editor.activities}
           availableReporters={editor.getAvailableReporters()}
