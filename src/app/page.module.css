@@ -62,10 +62,15 @@
   padding: 0 0.25rem 0 0.25rem;
 }
 
-.addButton:hover {
+/* While hovered and not disabled */
+.addButton:hover:enabled {
   border-radius: 10px;
   border: 1px solid var(--activity-card-border-hover);
   margin: 0px;
+}
+
+.addButton:disabled {
+  cursor: not-allowed;
 }
 
 /* */

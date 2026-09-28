@@ -94,6 +94,9 @@ export default function Page() {
 function ReporterInput({ addReporter }: { addReporter: (name: string) => void }) {
   const reporterNameId = "reporter-name"
 
+  const [reporterName, setReporterName] = useState("")
+  const canSubmit = (reporterName !== "")
+
   function handleSubmit(event: React.SubmitEvent<HTMLFormElement>) {
     // Prevent page reload
     event.preventDefault();
@@ -105,18 +108,25 @@ function ReporterInput({ addReporter }: { addReporter: (name: string) => void })
 
       // Clear field
       name.value = ""
+      setReporterName("")
     }
   }
 
   return (
-    <form className={`${styles.nameAndAdd} ${styles.reporterInput}`} onSubmit={handleSubmit}>
+    <form className={`${styles.nameAndAdd} ${styles.reporterInput}`} onSubmit={handleSubmit} autoComplete="off">
       <label className={styles.nameLabel} htmlFor={reporterNameId}>
         Enter reporter name:
       </label>
-      <input className={styles.textInput} id={reporterNameId} type="text" />
+      <input
+        type="text"
+        className={styles.textInput}
+        id={reporterNameId}
+        onChange={event => setReporterName(event.target.value)} />
       <button
         className={`${styles.iconButton} ${styles.addButton}`}
-        type="submit" >
+        type="submit"
+        disabled={!canSubmit}
+        title={canSubmit ? "" : "Enter reporter name first"}>
         <FontAwesomeIcon icon={faPlus} />
         Add
       </button>
@@ -175,6 +185,10 @@ function ActivityInput({
   const activityNameId = "activity-name"
   const activityDescriptionId = "activity-description"
 
+  const [activityName, setActivityName] = useState("")
+  const [activityDescription, setActivityDescription] = useState("")
+  const canSubmit = activityName !== "" && activityDescription !== ""
+
   function handleSubmit(event: React.SubmitEvent<HTMLFormElement>) {
     // Prevent page reload
     event.preventDefault()
@@ -189,17 +203,26 @@ function ActivityInput({
       // Clear fields
       name.value = ""
       description.value = ""
+      setActivityName("")
+      setActivityDescription("")
     }
   }
 
   return (
-    <form className={styles.activityInput} onSubmit={handleSubmit}>
+    <form className={styles.activityInput} onSubmit={handleSubmit} autoComplete="off">
       <span className={styles.nameAndAdd}>
         <label className={styles.activityNameLabel} htmlFor={activityNameId}>
           Enter activity name:
         </label>
-        <input className={styles.textInput} id={activityNameId} type="text" />
-        <button className={`${styles.iconButton} ${styles.addButton}`}>
+        <input
+          type="text"
+          className={styles.textInput}
+          id={activityNameId}
+          onChange={event => setActivityName(event.target.value)} />
+        <button
+          className={`${styles.iconButton} ${styles.addButton}`}
+          disabled={!canSubmit} 
+          title={canSubmit ? "" : "Enter activity name and descripiton first"} >
           <FontAwesomeIcon icon={faPlus} />
           Add
         </button>
@@ -207,7 +230,10 @@ function ActivityInput({
       <label className={styles.activityDescriptionLabel} htmlFor={activityDescriptionId}>
         Enter activity description:
       </label>
-      <textarea className={styles.textInput} id={activityDescriptionId}
+      <textarea
+        className={styles.textInput}
+        id={activityDescriptionId}
+        onChange={event => setActivityDescription(event.target.value)}
         placeholder="Once you enter a name and description, press the + button"></textarea>
     </form>
   )
