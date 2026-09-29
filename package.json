@@ -17,18 +17,20 @@
     "@fortawesome/react-fontawesome": "^3.5.0",
     "next": "16.3.5",
     "react": "19.2.8",
-    "react-dom": "19.2.8",
-    "vitest": "^5.0.1"
+    "react-dom": "19.2.8"
   },
   "devDependencies": {
+    "@testing-library/react": "^16.3.3",
     "@types/node": "^22.20.4",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "@vitejs/plugin-react": "^5.0.2",
-    "@vitest/coverage-v8": "^5.0.1",
+    "@vitejs/plugin-react": "^5.2.0",
+    "@vitest/coverage-v8": "^5.0.2",
     "babel-plugin-react-compiler": "1.0.0",
     "eslint": "^9",
     "eslint-config-next": "16.3.5",
-    "typescript": "^5"
+    "jsdom": "^29.1.1",
+    "typescript": "^5",
+    "vitest": "^5.0.2"
   }
 }
