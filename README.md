@@ -1,36 +1,50 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ActivityEditor
 
-## Getting Started
+**ActivityEditor** is an app where you (an editor) can maintain a list of activities and
+reporters. You can add and remove reporters and activities, promote activities, and assign
+reporters to activities.
 
-First, run the development server:
+## Building and running
 
-```bash
+Run the commands:
+
+```sh
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Then navigate to `localhost:3000` in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Some other commands you may want to run:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```sh
+npm run test                    # run test cases
+npm run test -- --coverage      # run test cases with code coverage
+npm run lint                    # run linter
+npm run build                   # compile site into static webpages
+npm run start                   # start the compiled site
+```
 
-## Learn More
+## Usage
 
-To learn more about Next.js, take a look at the following resources:
+The website has 2 major sections: Reporters and Activities. You can add reporters or
+activities by entering a name and (for activities) a description into the text fields,
+then clicking the Add (`+`) button. Reporters and activities are displayed as a list in
+their corresponding sections. New reporters/activities are added to the bottom of the list.
+(*Use cases: Add Reporter, Append Activity*)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Unassigned reporters and activities have a delete button to remove the item entirely. This
+can only be done on reporters that have not been assigned to an activity and to activities
+that do not have a reporter assigned to it. (*Use cases: Remove Activity, Remove
+Reporter*)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+An activity can be promoted by clicking on it. When you hover your cursor over an
+activity, it will highlight blue to show that it can be clicked. When you click on it, it
+will be moved to the top of the list. (*Use case: Promote Activity*)
 
-## Deploy on Vercel
+A reporter can be assigned to an activity by selected it from a dropdown menu on an
+activity card of an unassigned event. Once a reporter is assigned to an activity, it is
+removed from the list in the reporters section and put on the corresponding event card.
+Notice that event cards with assigned reporters no longer have a delete button. (*Use
+case: Assign Reporter*)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
