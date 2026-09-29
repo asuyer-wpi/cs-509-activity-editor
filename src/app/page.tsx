@@ -1,7 +1,7 @@
 "use client"
 import styles from "./page.module.css"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faPlus, faTrashCan, faUpDownLeftRight } from "@fortawesome/free-solid-svg-icons"
+import { faPlus, faTrashCan } from "@fortawesome/free-solid-svg-icons"
 import { useState } from "react"
 
 import { ActivityEditor, Activity, Reporter } from "@/model"
@@ -113,7 +113,10 @@ function ReporterInput({ addReporter }: { addReporter: (name: string) => void })
   }
 
   return (
-    <form className={`${styles.nameAndAdd} ${styles.reporterInput}`} onSubmit={handleSubmit} autoComplete="off">
+    <form
+      className={`${styles.nameAndAdd} ${styles.reporterInput}`}
+      onSubmit={handleSubmit}
+      autoComplete="off" >
       <label className={styles.nameLabel} htmlFor={reporterNameId}>
         Enter reporter name:
       </label>
@@ -221,7 +224,7 @@ function ActivityInput({
           onChange={event => setActivityName(event.target.value)} />
         <button
           className={`${styles.iconButton} ${styles.addButton}`}
-          disabled={!canSubmit} 
+          disabled={!canSubmit}
           title={canSubmit ? "" : "Enter activity name and descripiton first"} >
           <FontAwesomeIcon icon={faPlus} />
           Add
@@ -292,8 +295,8 @@ function ActivityCard({
   promoteActivity: (activity: Activity) => void,
 }) {
   // Name of the reporter assigned to this activity, or "" if no reporter assigned
-  const [selectedReporterName, _setSelectedReporter]
-    = useState<string>(activity.assignee != null ? activity.assignee.name : "")
+  const [selectedReporterName] =
+    useState<string>(activity.assignee != null ? activity.assignee.name : "")
 
   function handleDeleteClick(event: React.MouseEvent<HTMLButtonElement>) {
     // Remove this activity if the remove button is clicked
